@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/all_anime_controller.dart';
-import 'package:flutter_application_1/utils/color.dart';
+import 'package:flutter_application_1/view/widgets/error_screen.dart';
 import 'package:flutter_application_1/view/widgets/home_screen/anime_card_1.dart';
 import 'package:flutter_application_1/view/widgets/shimmer_loading.dart';
 import 'package:get/get.dart';
+
+import '../utils/theme.dart';
 
 class AllAnimeScreen extends GetView<AllAnimeController> {
   const AllAnimeScreen({super.key});
@@ -18,8 +20,15 @@ class AllAnimeScreen extends GetView<AllAnimeController> {
         elevation: 0,
         stretch: true,
         centerTitle: false,
+        leading: InkWell(
+            borderRadius: BorderRadius.circular(50),
+            onTap: () => Get.back(),
+            child: Icon(Icons.arrow_back_ios_new_rounded)),
         backgroundColor: Get.theme.scaffoldBackgroundColor,
-        title: Text('انمي'),
+        title: Text(
+          'انمي',
+          style: CustomTheme.darkTextTheme.bodyMedium!,
+        ),
       ),
       SliverToBoxAdapter(
         child: SingleChildScrollView(
@@ -27,23 +36,9 @@ class AllAnimeScreen extends GetView<AllAnimeController> {
           padding: EdgeInsets.symmetric(horizontal: 8),
           child: Obx(
             () => controller.error.value
-                ? SizedBox(
-                    height: Get.height - 100,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('حدث خطأ ما الرجاء اعادة المحاولة'),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        TextButton(
-                            style: TextButton.styleFrom(
-                                backgroundColor: PColors.premiumColor),
-                            onPressed: () => controller.scrapeWebsiteData(
-                                Get.parameters['page'] ?? ''),
-                            child: Text('اعادة المحاولة'))
-                      ],
-                    ),
+                ? ErrorPage(
+                    ontTap: () => controller
+                        .scrapeWebsiteData(Get.parameters['page'] ?? ''),
                   )
                 : (!controller.error.value &&
                         !controller.loading.value &&
@@ -53,7 +48,10 @@ class AllAnimeScreen extends GetView<AllAnimeController> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('لم يتم العثور على انميات'),
+                            Text(
+                              'لم يتم العثور على انميات',
+                              style: CustomTheme.darkTextTheme.bodyMedium!,
+                            ),
                           ],
                         ),
                       )

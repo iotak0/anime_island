@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utils/theme.dart';
-import 'package:get/get.dart';
 
 class CustomTitle extends StatelessWidget {
   final String tital;

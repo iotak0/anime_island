@@ -11,6 +11,7 @@ import 'package:flutter_application_1/utils/icons.dart';
 import 'package:flutter_application_1/utils/theme.dart';
 import 'package:flutter_application_1/view/widgets/custom_cached_network_image.dart';
 import 'package:flutter_application_1/view/widgets/custom_titel.dart';
+import 'package:flutter_application_1/view/widgets/error_screen.dart';
 import 'package:flutter_application_1/view/widgets/home_screen/anime_card_1.dart';
 import 'package:flutter_application_1/view/widgets/home_screen/episode_anime_card_1.dart';
 import 'package:flutter_application_1/view/widgets/shimmer_loading.dart';
@@ -185,12 +186,13 @@ class HomePage extends GetView<HomeController> {
                                           style: CustomTheme
                                               .darkTextTheme.bodySmall!
                                               .copyWith(
-                                                  fontSize: 14,
                                                   color: PColors.premiumColor),
                                         )),
                                     TextButton(
                                         onPressed: () => SmartDialog.dismiss(),
-                                        child: Text('رجوع')),
+                                        child: Text('رجوع',
+                                            style: CustomTheme
+                                                .darkTextTheme.bodySmall!)),
                                   ],
                                 )
                               ],
@@ -216,22 +218,8 @@ class HomePage extends GetView<HomeController> {
             SliverToBoxAdapter(
               child: Obx(
                 () => controller.error.value
-                    ? SizedBox(
-                        height: Get.height - 100,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('حدث خطأ ما الرجاء اعادة المحاولة'),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            TextButton(
-                                style: TextButton.styleFrom(
-                                    backgroundColor: PColors.premiumColor),
-                                onPressed: () => controller.scrapeWebsiteData(),
-                                child: Text('اعادة المحاولة'))
-                          ],
-                        ),
+                    ? ErrorPage(
+                        ontTap: () => controller.scrapeWebsiteData(),
                       )
                     : Column(
                         children: [
