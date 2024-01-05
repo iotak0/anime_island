@@ -16,20 +16,22 @@ class AllAnimeScreen extends GetView<AllAnimeController> {
         body: SafeArea(
             child: CustomScrollView(slivers: [
       SliverAppBar(
-        pinned: false,
+        pinned: true,
         elevation: 0,
         stretch: true,
+        surfaceTintColor: Colors.transparent,
         centerTitle: false,
         leading: InkWell(
             borderRadius: BorderRadius.circular(50),
             onTap: () => Get.back(),
-            child: Icon(Icons.arrow_back_ios_new_rounded)),
+            child: const Icon(Icons.arrow_back_ios_new_rounded)),
         backgroundColor: Get.theme.scaffoldBackgroundColor,
         title: Text(
           'انمي',
           style: CustomTheme.darkTextTheme.bodyMedium!,
         ),
       ),
+      //   leading: CustomBackButton(),
       SliverToBoxAdapter(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -62,18 +64,23 @@ class AllAnimeScreen extends GetView<AllAnimeController> {
                         children: List.generate(
                             controller.loading.value
                                 ? 30
-                                : controller.animeList.length,
-                            (index) => controller.loading.value
-                                ? ShimmerLoading(
-                                    height: 220,
-                                    width: 160,
-                                    radius: 15,
-                                  )
-                                : AnimeCardHomeScreen1(
-                                    anime: controller.animeList[index],
-                                    height: 220,
-                                    width: 160,
-                                  )),
+                                : controller.animeList.length, (index) {
+                          if (index == controller.animeList.length - 1) {
+                            // Reached the end of the list, load more items
+                            controller.loadMoreItems();
+                          }
+                          return controller.loading.value
+                              ? ShimmerLoading(
+                                  height: 220,
+                                  width: 160,
+                                  radius: 15,
+                                )
+                              : AnimeCardHomeScreen1(
+                                  anime: controller.animeList[index],
+                                  height: 220,
+                                  width: 160,
+                                );
+                        }),
                       ),
           ),
         ),

@@ -39,7 +39,7 @@ class AdMobController extends GetxController {
   }
 
   // TODO: Implement _loadInterstitialAd()
-  loadInterstitialAd(doSomething) async {
+  Future loadInterstitialAd(doSomething) async {
     InterstitialAd.load(
       adUnitId: AdHelper.interstitialAdUnitId,
       request: AdRequest(),
@@ -62,7 +62,7 @@ class AdMobController extends GetxController {
   }
 
   // TODO: Implement _loadRewardedAd()
-  loadRewardedAd() async {
+  Future loadRewardedAd() async {
     SmartDialog.showLoading(msg: 'يرجى الإنتظار...');
     RewardedAd.load(
       adUnitId: AdHelper.rewardedAdUnitId,
@@ -76,7 +76,6 @@ class AdMobController extends GetxController {
               SmartDialog.dismiss();
               update();
               SmartDialog.showLoading(msg: 'يرجى الإنتظار...');
-
               loadRewardedAd();
               SmartDialog.dismiss();
             },

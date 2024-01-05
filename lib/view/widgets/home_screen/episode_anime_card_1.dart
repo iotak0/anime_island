@@ -23,6 +23,7 @@ class EpisodeAnimeCard_1 extends StatelessWidget {
         onTap: () {
           Helper.showServersList(episode.episodeUrl);
         },
+        onLongPress: () => Helper.showStory('عنوان الحلقة',episode.description),
         child: SizedBox(
           width: width,
           child: Column(
@@ -47,7 +48,7 @@ class EpisodeAnimeCard_1 extends StatelessWidget {
               //       borderRadius: BorderRadius.circular(15),
               //       color: PColors.darkColor),
               // ),
-              
+
               Text(
                 episode.description,
                 maxLines: 1,

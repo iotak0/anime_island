@@ -1,4 +1,3 @@
-
 import 'package:flutter_application_1/models/anime_model.dart';
 import 'package:flutter_application_1/models/anime_results.dart';
 import 'package:flutter_application_1/models/anime_type_model.dart';
@@ -11,7 +10,6 @@ import 'package:html/parser.dart' as parser;
 import 'package:html/dom.dart' as dom;
 
 //import 'package:uuid/uuid.dart';
-
 
 /// [AnimeService] contains a lot of convenience methods that allow easier
 /// access, management and data handling from remote APIs with the goal of
@@ -78,7 +76,15 @@ class AnimeService {
     return AnimeResults(animeList: animeList);
   }
 
-  Future<EpisodeResults> getAnimesEpisodesHome(response,  type) async {
+  Future<String> getAnimeSeason(response) async {
+    final dom.Document document = parser.parse(response.body);
+    var animeSeason =
+        document.querySelector('#menu-item-3508 > a')!.attributes['href'] ??
+            'anime-season/صيف-2023';
+    return animeSeason.replaceFirst('https://cloudanime.site/', '');
+  }
+
+  Future<EpisodeResults> getAnimesEpisodesHome(response, type) async {
     List<Episode> episodeList = [];
     final dom.Document documen0 = parser.parse(response.body);
     final List<dom.Document> documents = documen0
@@ -185,7 +191,7 @@ class AnimeService {
 
     var genresName = document
         .querySelectorAll(" div.anime-info-left > div > ul > li > a")
-        .map((e) => e.innerHtml.trim() )
+        .map((e) => e.innerHtml.trim())
         .toList();
     var genresUrl = document
         .querySelectorAll(" div.anime-info-left > div > ul > li > a")
@@ -215,10 +221,9 @@ class AnimeService {
         .innerHtml
         .trim();
     final moreInfo = document
-        .querySelectorAll(
-            "div.anime-info-left > div > div.row > div > div").map((e) => 
-        e.outerHtml
-        .trim()).toList();
+        .querySelectorAll("div.anime-info-left > div > div.row > div > div")
+        .map((e) => e.outerHtml.trim())
+        .toList();
     var episodeUrls = document
         .querySelectorAll(
             "#DivEpisodesList > div > div > div > div > div > h3 > a")

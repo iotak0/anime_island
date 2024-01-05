@@ -6,11 +6,14 @@ import 'package:flutter_application_1/route_management/routs.dart';
 import 'package:flutter_application_1/utils/color.dart';
 import 'package:flutter_application_1/utils/icons.dart';
 import 'package:flutter_application_1/utils/theme.dart';
+import 'package:flutter_application_1/view/widgets/custom_back_button.dart';
 import 'package:flutter_application_1/view/widgets/custom_cached_network_image.dart';
+import 'package:flutter_application_1/view/widgets/custom_expansion_list.dart';
 import 'package:flutter_application_1/view/widgets/custom_titel.dart';
 import 'package:flutter_application_1/view/widgets/error_screen.dart';
 import 'package:flutter_application_1/view/widgets/plot_summary.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -29,16 +32,7 @@ class AnimeDetails extends GetView<AnimeDetailsController> {
                   AppBar(
                     elevation: 0,
                     backgroundColor: Colors.transparent,
-                    leading: InkWell(
-                        borderRadius: BorderRadius.circular(50),
-                        onTap: () => Get.back(),
-                        child: Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 8),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: PColors.darkBackground.withOpacity(.5)),
-                            child: Icon(Icons.arrow_back_ios_new_rounded))),
+                    leading: CustomBackButton(),
                   ),
                   ErrorPage(
                     ontTap: () => controller.scrapeWebsiteData(),
@@ -46,7 +40,7 @@ class AnimeDetails extends GetView<AnimeDetailsController> {
                 ],
               )
             : controller.loading.value
-                ? Center(
+                ? const Center(
                     child: CircularProgressIndicator(),
                   )
                 : CustomScrollView(
@@ -58,17 +52,7 @@ class AnimeDetails extends GetView<AnimeDetailsController> {
                         surfaceTintColor: Colors.transparent,
                         stretch: true,
                         centerTitle: false,
-                        leading: InkWell(
-                            borderRadius: BorderRadius.circular(50),
-                            onTap: () => Get.back(),
-                            child: Container(
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color:
-                                        PColors.darkBackground.withOpacity(.5)),
-                                child: Icon(Icons.arrow_back_ios_new_rounded))),
+                        leading: CustomBackButton(),
                         expandedHeight: 300,
                         flexibleSpace: FlexibleSpaceBar(
                           stretchModes: [StretchMode.blurBackground],
@@ -85,42 +69,12 @@ class AnimeDetails extends GetView<AnimeDetailsController> {
                                     imageUrl: controller.anime.imageUrl),
                                 InkWell(
                                   onTap: () {
-                                    YoutubePlayerController _controller =
-                                        YoutubePlayerController(
-                                      initialVideoId:
-                                          YoutubePlayer.convertUrlToId(
-                                                  controller
-                                                      .anime.youtubeTrailer)
-                                              .toString(),
-                                      flags: YoutubePlayerFlags(
-                                        autoPlay: true,
-                                        mute: false,
-                                      ),
-                                    );
-
-                                    Get.dialog(
-                                        useSafeArea: true,
-                                        Dialog(
-                                          child: Container(
-                                            //height: 220,
-                                            width: Get.width,
-                                            color: Colors.black.withOpacity(.8),
-                                            child: YoutubePlayer(
-                                              controller: _controller,
-                                              showVideoProgressIndicator: true,
-                                              // videoProgressIndicatorColor: Colors.amber,
-                                              // progressColors: ProgressColors(
-                                              //     playedColor: Colors.amber,
-                                              //     handleColor: Colors.amberAccent,
-                                              // ),
-                                              // onReady () {
-                                              //     _controller.addListener(listener);
-                                              // },
-                                            ),
-                                          ),
-                                        ),
-                                        barrierColor: PColors.darkBackground
-                                            .withOpacity(.5));
+                                    if (controller.anime.episodes.isEmpty) {
+                                      SmartDialog.showToast(
+                                          'لا توجدت حلقات لعرضها!');
+                                    }
+                                    Helper.showServersList(controller
+                                        .anime.episodes[0].episodeUrl);
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -150,81 +104,84 @@ class AnimeDetails extends GetView<AnimeDetailsController> {
                       ),
                       SliverToBoxAdapter(
                           child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 8.0),
-                                    child: Text(
-                                      controller.anime.title,
-                                      style:
-                                          CustomTheme.darkTextTheme.bodyLarge!,
-                                    ),
-                                  ),
-                                  SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      children: List.generate(
-                                          controller.anime.genres.length,
-                                          (index) => InkWell(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                onTap: () {
-                                                  Get.printInfo(
-                                                      info: controller.anime
-                                                          .genres[index].link);
-                                                  Get.toNamed(
-                                                      Routs.kAnimeScreen,
-                                                      parameters: {
-                                                        'page': controller.anime
-                                                            .genres[index].link
-                                                            .trim()
-                                                      });
-                                                },
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 4, horizontal: 8.0),
+                                child: Text(
+                                  controller.anime.title,
+                                  style: CustomTheme.darkTextTheme.bodyLarge!,
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: List.generate(
+                                      controller.anime.genres.length,
+                                      (index) => InkWell(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            onTap: () {
+                                              Get.printInfo(
+                                                  info: controller.anime
+                                                      .genres[index].link);
+                                              Get.toNamed(Routs.kAnimeScreen,
+                                                  parameters: {
+                                                    'page': controller.anime
+                                                        .genres[index].link
+                                                        .trim()
+                                                  });
+                                            },
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  border: Border.all(
+                                                      color: PColors.darkColor),
+                                                ),
                                                 child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(4.0),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                      border: Border.all(
-                                                          color: PColors
-                                                              .darkColor),
-                                                    ),
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          vertical: 8,
-                                                          horizontal: 16.0),
-                                                      child: Text(
-                                                        controller.anime
-                                                            .genres[index].name,
-                                                        style: CustomTheme
-                                                            .darkTextTheme
-                                                            .bodySmall!,
-                                                      ),
-                                                    ),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 8,
+                                                      horizontal: 16.0),
+                                                  child: Text(
+                                                    controller.anime
+                                                        .genres[index].name,
+                                                    style: CustomTheme
+                                                        .darkTextTheme
+                                                        .bodySmall!,
                                                   ),
                                                 ),
-                                              )),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 4.0),
-                                    child: CustomTitle(tital: 'معلومات إضافية'),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16.0),
-                                    child: Wrap(
-                                      children: List.generate(
-                                          controller.anime.moreInfo.length,
-                                          (index) => Html(
+                                              ),
+                                            ),
+                                          )),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 4.0),
+                                child: CustomTitle(tital: 'معلومات إضافية'),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: Wrap(
+                                  runSpacing: 4,
+                                  spacing: 8,
+                                  children: List.generate(
+                                      controller.anime.moreInfo.length,
+                                      (index) => Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text('●'),
+                                              Html(
+                                                  shrinkWrap: true,
                                                   data: controller
                                                       .anime.moreInfo[index],
                                                   onLinkTap: (url, attributes,
@@ -255,82 +212,107 @@ class AnimeDetails extends GetView<AnimeDetailsController> {
                                                       fontStyle:
                                                           FontStyle.normal,
                                                     ),
-                                                  })),
-                                    ),
+                                                  }),
+                                            ],
+                                          )),
+                                ),
+                              ),
+                              PlotSummary(
+                                  summary: controller.anime.description),
+                              ExpansionList(title: 'العرض التشويقي', children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: YoutubePlayer(
+                                    controller:
+                                        controller.youtubePlayerController,
+                                    showVideoProgressIndicator: true,
+                                    bottomActions: [],
+                                    progressIndicatorColor:
+                                        PColors.premiumColor,
                                   ),
-                                  PlotSummary(
-                                      summary: controller.anime.description),
-                                  ExpansionTile(
-                                      textColor:
-                                          Color.fromARGB(255, 104, 208, 240),
-                                      iconColor:
-                                          Color.fromARGB(255, 104, 208, 240),
-                                      title: Text(
-                                        'الحلقات',
-                                        style: CustomTheme
-                                            .darkTextTheme.displaySmall!,
-                                      ),
-                                      childrenPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 10),
-                                      children: [
-                                        ...List.generate(
-                                          controller.anime.episodes.length,
-                                          (index) => Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: InkWell(
-                                                //onTap: () => Get.toNamed(Routs.kWebPlayer),
-                                                onTap: () {
-                                                  Helper.showServersList(
-                                                      controller
-                                                          .anime
-                                                          .episodes[index]
-                                                          .episodeUrl);
-                                                },
-                                                child: ListTile(
-                                                  trailing: Container(
-                                                    height: double.maxFinite,
-                                                    width: Get.width / 3,
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                          image: NetworkImage(
-                                                              controller
-                                                                  .anime
-                                                                  .episodes[
-                                                                      index]
-                                                                  .imageUrl),
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                        color:
-                                                            PColors.darkColor),
-                                                  ),
-                                                  title: Text(
-                                                    controller.anime
-                                                        .episodes[index].title,
-                                                    style: CustomTheme
-                                                        .darkTextTheme
-                                                        .bodyMedium!,
-                                                  ),
-                                                  subtitle: Text(
-                                                    controller
-                                                        .anime
-                                                        .episodes[index]
-                                                        .description,
-                                                    maxLines: 3,
-                                                    style: CustomTheme
-                                                        .darkTextTheme
-                                                        .bodySmall!,
-                                                  ),
-                                                ),
-                                              )),
-                                        )
-                                      ])
-                                ],
-                              )))
+                                ),
+                              ]),
+                              ExpansionList(
+                                  title: 'الحلقات',
+                                  children: List.generate(
+                                      controller.episodesGroups,
+                                      (index0) => ExpansionList(
+                                          title:
+                                              '${controller.getEpisodeRange(index0 + 1)['end']} - ${controller.getEpisodeRange(index0 + 1)['start'] + 1}',
+                                          children: List.generate(
+                                            (controller.getEpisodeRange(
+                                                        index0 + 1)['end'] -
+                                                    controller.getEpisodeRange(
+                                                        index0 + 1)['start'])
+                                                .abs(),
+                                            (index) {
+                                              int lastIndex =
+                                                  controller.getEpisodeRange(
+                                                          index0 + 1)['end'] -
+                                                      (index + 1);
+                                              return Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: InkWell(
+                                                    onTap: () =>
+                                                        Helper.showServersList(
+                                                            controller
+                                                                .anime
+                                                                .episodes[
+                                                                    lastIndex]
+                                                                .episodeUrl),
+                                                    child: ListTile(
+                                                      trailing: Container(
+                                                        height:
+                                                            double.maxFinite,
+                                                        width: Get.width / 3,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                  image: NetworkImage(controller
+                                                                      .anime
+                                                                      .episodes[
+                                                                          lastIndex]
+                                                                      .imageUrl),
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8),
+                                                                color: PColors
+                                                                    .darkColor),
+                                                      ),
+                                                      title: Text(
+                                                        controller
+                                                            .anime
+                                                            .episodes[lastIndex]
+                                                            .title,
+                                                        style: CustomTheme
+                                                            .darkTextTheme
+                                                            .bodyMedium!,
+                                                      ),
+                                                      subtitle: Text(
+                                                        controller
+                                                            .anime
+                                                            .episodes[lastIndex]
+                                                            .description,
+                                                        maxLines: 3,
+                                                        style: CustomTheme
+                                                            .darkTextTheme
+                                                            .bodySmall!,
+                                                      ),
+                                                    ),
+                                                  ));
+                                            },
+                                          ))))
+                            ]),
+                      ))
                     ],
                   ),
       ),

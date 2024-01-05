@@ -1,14 +1,18 @@
 import 'dart:math';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/admob_controller.dart';
 import 'package:flutter_application_1/controllers/home_controller.dart';
+import 'package:flutter_application_1/helper/helper.dart';
+import 'package:flutter_application_1/models/genres_model.dart';
 import 'package:flutter_application_1/route_management/routs.dart';
 import 'package:flutter_application_1/utils/color.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/utils/icons.dart';
 import 'package:flutter_application_1/utils/theme.dart';
+import 'package:flutter_application_1/view/widgets/custom_back_button.dart';
 import 'package:flutter_application_1/view/widgets/custom_cached_network_image.dart';
 import 'package:flutter_application_1/view/widgets/custom_titel.dart';
 import 'package:flutter_application_1/view/widgets/error_screen.dart';
@@ -18,6 +22,7 @@ import 'package:flutter_application_1/view/widgets/shimmer_loading.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -26,47 +31,108 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        backgroundColor: Get.theme.scaffoldBackgroundColor,
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                CustomImage(
+                  height: 300,
+                  width: double.infinity,
+                  radius: 0,
+                  imageUrl: controller.lastAnimeList[0].imageUrl,
+                ),
+              ],
+            ),
+            ListTile(
+              title: Text(
+                'الصفحة الرئسية',
+                style: CustomTheme.darkTextTheme.bodyMedium,
+              ),
+              onTap: () {
+                if (Get.currentRoute == Routs.kHomePage) {
+                  Get.back();
+                  return;
+                }
+                Get.offAllNamed(Routs.kHomePage);
+              },
+            ),
+            ListTile(
+              title: Text(
+                'الموسم الحالي',
+                style: CustomTheme.darkTextTheme.bodyMedium,
+              ),
+              onTap: () => Get.toNamed(Routs.kAnimeScreen, parameters: {
+                'page': controller.animeSeason ?? 'anime-season/صيف-2023'
+              }),
+            ),
+            ListTile(
+              title: Text(
+                'افلام الانمي',
+                style: CustomTheme.darkTextTheme.bodyMedium,
+              ),
+              onTap: () => Get.toNamed(Routs.kAnimeScreen,
+                  parameters: {'page': 'anime-type/movie'}),
+            ),
+            ListTile(
+              title: Text(
+                'انميات مدبلجة',
+                style: CustomTheme.darkTextTheme.bodyMedium,
+              ),
+              onTap: () => Get.toNamed(Routs.kAnimeScreen,
+                  parameters: {'page': 'anime-category/الانمي-المدبلج'}),
+            ),
+            ListTile(
+              title: Text(
+                'حول التطبيق',
+                style: CustomTheme.darkTextTheme.bodyMedium,
+              ),
+              onTap: () => Helper.showStory('حول التطبيق', aboutApp),
+            ),
+          ],
+        ),
+      ),
+      drawerEnableOpenDragGesture: true,
+      endDrawerEnableOpenDragGesture: true,
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            // ListTile(
-            //   leading: Container(
-            //       height: 45,
-            //       width: 45,
-            //       decoration: BoxDecoration(
-            //         borderRadius: BorderRadius.circular(50),
-            //         image: DecorationImage(
-            //           image: const NetworkImage(
-            //               '''https://cloudanime.site/wp-content/uploads/2023/07/Ashampoo_Snap_2023.07.02_15h09m21s_002_.webp'''),
-            //           fit: BoxFit.cover,
-            //         ),
-            //       ),
-            //       child: Padding(
-            //         padding: const EdgeInsets.all(4.0),
-            //       )),
-            //   title: Text('Mont', maxLines: 2, overflow: TextOverflow.ellipsis),
-            //   trailing: InkWell(
-            //     onTap: () {},
-            //     borderRadius: BorderRadius.circular(50),
-            //     child: CircleAvatar(
-            //       radius: 20,
-            //       child: Padding(
-            //         padding: const EdgeInsets.all(4.0),
-            //         child: SvgPicture.string(PIcons.notifications,
-            //             theme: CustomTheme.svgTheme),
-            //       ),
-            //     ),
-            //   ),
-            // ),
             SliverAppBar(
               pinned: false,
               elevation: 0,
               stretch: true,
-              centerTitle: false,
+              centerTitle: true,
 
               backgroundColor: Get.theme.scaffoldBackgroundColor,
-              title: Text('جزيرة الانمي',
-                  style: CustomTheme.darkTextTheme.bodyLarge!),
+              title: DefaultTextStyle(
+                style: GoogleFonts.cairo().copyWith(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w700,
+                ),
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    RotateAnimatedText(
+                      'انمي ايلاند',
+                      duration: Duration(seconds: 3),
+                    ),
+                    RotateAnimatedText(
+                      'AnimeIsland',
+                      duration: Duration(seconds: 3),
+                      textStyle: GoogleFonts.rubikBubbles().copyWith(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    RotateAnimatedText(
+                      'جزيرة الانمي',
+                      duration: Duration(seconds: 3),
+                    ),
+                  ],
+                  repeatForever: true,
+                  isRepeatingAnimation: true,
+                ),
+              ),
               //?search_param=animes&s=hi
               flexibleSpace: FlexibleSpaceBar(
                 stretchModes: [StretchMode.blurBackground],
@@ -161,19 +227,20 @@ class HomePage extends GetView<HomeController> {
                                                             AdMobController>()
                                                         .loadRewardedAd();
                                                   }
-                                                  //Get.back();
-                                                  Get.find<AdMobController>()
+                                                  await Get.find<
+                                                          AdMobController>()
                                                       .rewardedAd
                                                       ?.show(
                                                     onUserEarnedReward:
                                                         (_, reward) {
                                                       SmartDialog.dismiss();
                                                       Get.toNamed(
-                                                          Routs.kAnimeScreen,
-                                                          parameters: {
-                                                            'page':
-                                                                '?search_param=animes&s=$key'
-                                                          });
+                                                        Routs.kAnimeScreen,
+                                                        parameters: {
+                                                          'page':
+                                                              '?search_param=animes&s=$key'
+                                                        },
+                                                      );
                                                     },
                                                   );
                                                 },
@@ -214,7 +281,6 @@ class HomePage extends GetView<HomeController> {
                 ),
               ],
             ),
-
             SliverToBoxAdapter(
               child: Obx(
                 () => controller.error.value
@@ -274,6 +340,10 @@ class HomePage extends GetView<HomeController> {
                                                       radius: 15,
                                                     )
                                                   : InkWell(
+                                                      onLongPress: () =>
+                                                          Helper.showStory(
+                                                              'القصة',
+                                                              i.description),
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               15),
@@ -292,10 +362,22 @@ class HomePage extends GetView<HomeController> {
                                                                     AdMobController>()
                                                                 .interstitialAd !=
                                                             null) {
-                                                          Get.find<
+                                                          await Get.find<
                                                                   AdMobController>()
                                                               .interstitialAd
-                                                              ?.show();
+                                                              ?.show()
+                                                              .then((value) => Get
+                                                                      .find<
+                                                                          AdMobController>()
+                                                                  .interstitialAd!
+                                                                  .dispose());
+                                                          Get.toNamed(
+                                                              Routs
+                                                                  .kAnimeDetails,
+                                                              parameters: {
+                                                                'url':
+                                                                    i.animeUrl
+                                                              });
                                                         } else {
                                                           Get.toNamed(
                                                               Routs
@@ -310,26 +392,6 @@ class HomePage extends GetView<HomeController> {
                                                         alignment: Alignment
                                                             .bottomCenter,
                                                         children: [
-                                                          // Container(
-                                                          //   alignment: Alignment
-                                                          //       .topCenter,
-                                                          //   height: 200,
-                                                          //   width: Get.width,
-                                                          //   decoration:
-                                                          //       BoxDecoration(
-                                                          //           image:
-                                                          //               DecorationImage(
-                                                          //             image: NetworkImage(
-                                                          //                 i.imageUrl),
-                                                          //             fit: BoxFit
-                                                          //                 .cover,
-                                                          //           ),
-                                                          //           borderRadius:
-                                                          //               BorderRadius.circular(
-                                                          //                   15),
-                                                          //           color: PColors
-                                                          //               .darkColor),
-                                                          // ),
                                                           CustomImage(
                                                               radius: 15,
                                                               width: Get.width,
@@ -378,17 +440,7 @@ class HomePage extends GetView<HomeController> {
                               child: Obx(
                                 () => Row(
                                     children: List.generate(
-                                        [
-                                          ACTION,
-                                          ADVENTURE,
-                                          FANTASY,
-                                          HORROR,
-                                          SPORTS,
-                                          THRILLER,
-                                          FANTASY,
-                                          MAGIC,
-                                          MYSTERY
-                                        ].length,
+                                        Genre.genresList.length,
                                         (index) => InkWell(
                                               borderRadius:
                                                   BorderRadius.circular(15),
@@ -398,17 +450,8 @@ class HomePage extends GetView<HomeController> {
                                                 }
                                                 Get.toNamed(Routs.kAnimeScreen,
                                                     parameters: {
-                                                      'page': [
-                                                        ACTION,
-                                                        ADVENTURE,
-                                                        FANTASY,
-                                                        HORROR,
-                                                        SPORTS,
-                                                        THRILLER,
-                                                        FANTASY,
-                                                        MAGIC,
-                                                        MYSTERY
-                                                      ][index]
+                                                      'page': Genre
+                                                          .genresList[index]
                                                     });
                                               },
                                               child: Container(
@@ -427,35 +470,26 @@ class HomePage extends GetView<HomeController> {
                                                   padding: const EdgeInsets
                                                       .symmetric(
                                                       horizontal: 16.0),
-                                                  child:
-                                                      controller.loading.value
-                                                          ? ShimmerLoading(
-                                                              height: 50,
-                                                              width: (Random()
-                                                                          .nextDouble() *
-                                                                      100) +
-                                                                  50,
-                                                              radius: 15,
-                                                            )
-                                                          : Text(
-                                                              [
-                                                                ACTION,
-                                                                ADVENTURE,
-                                                                FANTASY,
-                                                                HORROR,
-                                                                SPORTS,
-                                                                THRILLER,
-                                                                FANTASY,
-                                                                MAGIC,
-                                                                MYSTERY
-                                                              ][index]
-                                                                  .replaceAll(
-                                                                      'anime-genre/',
-                                                                      ''),
-                                                              style: CustomTheme
-                                                                  .darkTextTheme
-                                                                  .bodySmall!,
-                                                            ),
+                                                  child: controller
+                                                          .loading.value
+                                                      ? ShimmerLoading(
+                                                          height: 50,
+                                                          width: (Random()
+                                                                      .nextDouble() *
+                                                                  100) +
+                                                              50,
+                                                          radius: 15,
+                                                        )
+                                                      : Text(
+                                                          Genre
+                                                              .genresList[index]
+                                                              .replaceAll(
+                                                                  'anime-genre/',
+                                                                  ''),
+                                                          style: CustomTheme
+                                                              .darkTextTheme
+                                                              .bodySmall!,
+                                                        ),
                                                 ),
                                               ),
                                             ))),

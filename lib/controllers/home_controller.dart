@@ -1,4 +1,5 @@
 import 'package:flutter_application_1/helper/ad_helper.dart';
+import 'package:flutter_application_1/helper/helper.dart';
 import 'package:flutter_application_1/models/anime_model.dart';
 import 'package:flutter_application_1/models/episode_model.dart';
 import 'package:flutter_application_1/services/anime_service.dart';
@@ -18,6 +19,7 @@ class HomeController extends GetxController {
   List<Episode> get lastEpisodesList => _lastEpisodesList;
   var loading = true.obs;
   var error = false.obs;
+  var animeSeason;
   @override
   void onInit() {
     super.onInit();
@@ -27,6 +29,7 @@ class HomeController extends GetxController {
   Future<void> scrapeWebsiteData() async {
     error.value = false;
     loading.value = true;
+    await newVersoin();
     final response =
         await http.get(Uri.parse('https://cloudanime.site')).catchError((e) {
       error.value = true;
@@ -44,6 +47,17 @@ class HomeController extends GetxController {
     final list4 =
         await AnimeService().getAnimesEpisodesHome(response, URLs.lastEpisodes);
     lastEpisodesList.addAll(list4.episodeList!);
+    animeSeason = await AnimeService().getAnimeSeason(response);
     loading.value = false;
+  }
+
+  newVersoin() async {
+    final response =
+        await http.get(Uri.parse('https://cloudanime.site')).catchError((e) {
+      error.value = true;
+      loading.value = false;
+      return '';
+    });
+    Helper.checkForUpdate(response);
   }
 }
