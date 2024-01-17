@@ -1,7 +1,8 @@
+// ignore_for_file: invalid_return_type_for_catch_error
+
 import 'package:flutter_application_1/models/anime_model.dart';
 import 'package:flutter_application_1/models/anime_results.dart';
 import 'package:flutter_application_1/services/anime_service.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 

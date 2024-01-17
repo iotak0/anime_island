@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AdHelper {
-  static bool testMode = true;
+  static bool testMode = false;
   static String get bannerAdUnitId {
     if (Platform.isAndroid) {
       return testMode

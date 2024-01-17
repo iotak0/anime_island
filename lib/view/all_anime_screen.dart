@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/all_anime_controller.dart';
+import 'package:flutter_application_1/view/widgets/animeisland_titel.dart';
 import 'package:flutter_application_1/view/widgets/error_screen.dart';
 import 'package:flutter_application_1/view/widgets/home_screen/anime_card_1.dart';
 import 'package:flutter_application_1/view/widgets/shimmer_loading.dart';
 import 'package:get/get.dart';
-
 import '../utils/theme.dart';
 
-class AllAnimeScreen extends GetView<AllAnimeController> {
-  const AllAnimeScreen({super.key});
-
+class AllAnimeScreen extends StatelessWidget {
+  AllAnimeScreen({super.key});
+  final controller = Get.find<AllAnimeController>(tag: Get.parameters['page']);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,16 +20,22 @@ class AllAnimeScreen extends GetView<AllAnimeController> {
         elevation: 0,
         stretch: true,
         surfaceTintColor: Colors.transparent,
-        centerTitle: false,
+        centerTitle: true,
         leading: InkWell(
             borderRadius: BorderRadius.circular(50),
             onTap: () => Get.back(),
             child: const Icon(Icons.arrow_back_ios_new_rounded)),
         backgroundColor: Get.theme.scaffoldBackgroundColor,
-        title: Text(
-          'انمي',
-          style: CustomTheme.darkTextTheme.bodyMedium!,
-        ),
+        title: const AnimeIslandTtle(),
+        // title: Text(
+        //   'أكشن',
+        //   style: CustomTheme.darkTextTheme.bodyLarge,
+        // ),
+        actions: const [
+          SizedBox(
+            width: 50,
+          )
+        ],
       ),
       //   leading: CustomBackButton(),
       SliverToBoxAdapter(

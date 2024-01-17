@@ -1,4 +1,4 @@
-package com.animont.animeisland
+package com.mont.animeisland
 
 import io.flutter.embedding.android.FlutterActivity
 

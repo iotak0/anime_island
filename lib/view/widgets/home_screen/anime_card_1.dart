@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/helper/helper.dart';
 import 'package:flutter_application_1/models/anime_model.dart';
 import 'package:flutter_application_1/route_management/routs.dart';
-import 'package:flutter_application_1/utils/color.dart';
-import 'package:flutter_application_1/utils/icons.dart';
 import 'package:flutter_application_1/utils/theme.dart';
 import 'package:flutter_application_1/view/widgets/custom_cached_network_image.dart';
-import 'package:flutter_application_1/view/widgets/custom_titel.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class AnimeCardHomeScreen1 extends StatelessWidget {

@@ -10,10 +10,10 @@ class ScreenBindings implements Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => HomeController());
-    Get.lazyPut(() => AnimeDetailsController());
-    Get.lazyPut(() => AllAnimeController());
+    Get.create(() => AnimeDetailsController(),tag: Get.parameters['url']);
+    Get.create(() => AllAnimeController(),tag: Get.parameters['page']);
     Get.lazyPut(() => WebPlayerController());
-        Get.lazyPut(() => AdMobController());
+    Get.lazyPut(() => AdMobController());
 
     Get.put(LoadingController());
   }

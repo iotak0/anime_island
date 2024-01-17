@@ -29,8 +29,10 @@ class AnimeDetailsController extends GetxController {
     }).catchError((e) {
       error.value = true;
       loading.value = false;
+      // ignore: invalid_return_type_for_catch_error
       return '';
     });
+    // ignore: unnecessary_null_comparison
     if (anime == null) {
       loading.value = false;
     } else {

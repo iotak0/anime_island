@@ -20,7 +20,7 @@ class CustomImage extends StatelessWidget {
         width: width,
         height: height,
         fit: BoxFit.cover,
-        color: PColors.darkColor.withOpacity(.3),
+        color: Colors.black.withOpacity(.5),
         colorBlendMode: BlendMode.difference,
         cacheManager: Helper.cacheManager,
         imageUrl: imageUrl,

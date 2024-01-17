@@ -3,12 +3,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 /// Collection of all app related constants go here
 
-const String version = 'v1.6.3';
+const String version = '1.0.3';
 String updateLink = '';
 bool isSameVersion = true;
 const license = 'MIT License';
-const String latestRelease =
-    'https://api.github.com/repos/kaungsatthe1n/Tako-Play/releases/latest';
+const String latestRelease = 'https://animont.net/animeisland/release.json';
 
 const String baseUrl = 'https://cloudanime.site/';
 const String search = 'https://cloudanime.site/?search_param=animes&s=';
@@ -81,13 +80,18 @@ const String VAMPIRE = 'anime-genre/مصاصي دماء';
 
 // Color
 
-const Color tkDarkBlue = Color(0xFF0D1321);
-const Color tkDarkerBlue = Color(0xFF060B16);
-const Color tkDarkGreen = Color(0xFF1D4C4F);
+// const Color tkDarkBlue = Color(0xFF0D1321);
+// const Color tkDarkerBlue = Color(0xFF060B16);
+// const Color tkDarkGreen = Color(0xFF1D4C4F);
+// const Color tkGrey = Color(0xFF323435);
+// const Color tkGradientBlue = Color(0xFF133F6E);
+// const Color tkGradientBlack = Color(0xFF28313B);
+const Color tkDarkBlue = Color(0xFF5a189a);
+const Color tkDarkerBlue = Color(0xFF10002b);
+const Color tkDarkGreen = Color(0xFF491a74);
 const Color tkGrey = Color(0xFF323435);
-const Color tkGradientBlue = Color(0xFF133F6E);
-const Color tkGradientBlack = Color(0xFF28313B);
-
+const Color tkGradientBlue = Color(0xFF721cb8);
+const Color tkGradientBlack = Color(0xFF421869);
 const loadingIndicator = SpinKitSquareCircle(
   color: Colors.white,
 );

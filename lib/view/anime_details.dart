@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/anime_details_controller.dart';
 import 'package:flutter_application_1/controllers/loading_controller.dart';
@@ -18,9 +19,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class AnimeDetails extends GetView<AnimeDetailsController> {
+class AnimeDetails extends StatelessWidget {
   AnimeDetails({super.key});
   final loadingController = Get.find<LoadingController>();
+  final controller =
+      Get.find<AnimeDetailsController>(tag: Get.parameters['url']);
 
   @override
   Widget build(BuildContext context) {
@@ -237,84 +240,96 @@ class AnimeDetails extends GetView<AnimeDetailsController> {
                               ]),
                               ExpansionList(
                                   title: 'الحلقات',
-                                  children: List.generate(
-                                      controller.episodesGroups,
-                                      (index0) => ExpansionList(
-                                          title:
-                                              '${controller.getEpisodeRange(index0 + 1)['end']} - ${controller.getEpisodeRange(index0 + 1)['start'] + 1}',
-                                          children: List.generate(
-                                            (controller.getEpisodeRange(
-                                                        index0 + 1)['end'] -
-                                                    controller.getEpisodeRange(
-                                                        index0 + 1)['start'])
-                                                .abs(),
-                                            (index) {
-                                              int lastIndex =
-                                                  controller.getEpisodeRange(
-                                                          index0 + 1)['end'] -
+                                  children: controller.anime.episodes.length <=
+                                          50
+                                      ? List.generate(
+                                          controller.anime.episodes.length,
+                                          (index) => EpisodeDetailsCard(
+                                              onTap: () =>
+                                                  Helper.showServersList(
+                                                      controller
+                                                          .anime
+                                                          .episodes[index]
+                                                          .episodeUrl),
+                                              controller: controller,
+                                              index: index),
+                                        )
+                                      : List.generate(controller.episodesGroups,
+                                          (index0) {
+                                          return ExpansionList(
+                                              title:
+                                                  '${controller.getEpisodeRange(index0 + 1)['end']} - ${controller.getEpisodeRange(index0 + 1)['start'] + 1}',
+                                              children: List.generate(
+                                                (controller.getEpisodeRange(
+                                                            index0 + 1)['end'] -
+                                                        controller
+                                                            .getEpisodeRange(
+                                                                index0 +
+                                                                    1)['start'])
+                                                    .abs(),
+                                                (index) {
+                                                  int lastIndex = controller
+                                                          .getEpisodeRange(
+                                                              index0 +
+                                                                  1)['end'] -
                                                       (index + 1);
-                                              return Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: InkWell(
-                                                    onTap: () =>
-                                                        Helper.showServersList(
-                                                            controller
-                                                                .anime
-                                                                .episodes[
-                                                                    lastIndex]
-                                                                .episodeUrl),
-                                                    child: ListTile(
-                                                      trailing: Container(
-                                                        height:
-                                                            double.maxFinite,
-                                                        width: Get.width / 3,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                image:
-                                                                    DecorationImage(
-                                                                  image: NetworkImage(controller
-                                                                      .anime
-                                                                      .episodes[
-                                                                          lastIndex]
-                                                                      .imageUrl),
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                ),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            8),
-                                                                color: PColors
-                                                                    .darkColor),
-                                                      ),
-                                                      title: Text(
-                                                        controller
-                                                            .anime
-                                                            .episodes[lastIndex]
-                                                            .title,
-                                                        style: CustomTheme
-                                                            .darkTextTheme
-                                                            .bodyMedium!,
-                                                      ),
-                                                      subtitle: Text(
-                                                        controller
-                                                            .anime
-                                                            .episodes[lastIndex]
-                                                            .description,
-                                                        maxLines: 3,
-                                                        style: CustomTheme
-                                                            .darkTextTheme
-                                                            .bodySmall!,
-                                                      ),
-                                                    ),
-                                                  ));
-                                            },
-                                          ))))
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: EpisodeDetailsCard(
+                                                        onTap: () => Helper
+                                                            .showServersList(
+                                                                controller
+                                                                    .anime
+                                                                    .episodes[
+                                                                        lastIndex]
+                                                                    .episodeUrl),
+                                                        controller: controller,
+                                                        index: lastIndex),
+                                                  );
+                                                },
+                                              ));
+                                        }))
                             ]),
                       ))
                     ],
                   ),
+      ),
+    );
+  }
+}
+
+class EpisodeDetailsCard extends StatelessWidget {
+  const EpisodeDetailsCard({
+    super.key,
+    required this.controller,
+    required this.index,
+    required this.onTap,
+  });
+
+  final AnimeDetailsController controller;
+  final int index;
+  final GestureCancelCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: onTap,
+      trailing: CustomImage(
+        height: double.maxFinite,
+        width: Get.width / 3,
+        imageUrl: controller.anime.episodes[index].imageUrl,
+        radius: 8,
+      ),
+      title: Text(
+        controller.anime.episodes[index].title,
+        style: CustomTheme.darkTextTheme.bodyMedium!,
+      ),
+      subtitle: Text(
+        controller.anime.episodes[index].description,
+        maxLines: 3,
+        style: CustomTheme.darkTextTheme.bodySmall!,
       ),
     );
   }

@@ -11,6 +11,7 @@ import 'package:flutter_application_1/utils/theme.dart';
 import 'package:flutter_application_1/view/widgets/custom_titel.dart';
 import 'package:flutter_application_1/view/widgets/update_alert_dialog.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -33,9 +34,11 @@ class Helper {
             children: List.generate(
                 servers.serverList!.length,
                 (index) => InkWell(
-                      onTap: () => Get.toNamed(Routs.kWebPlayer, parameters: {
-                        'url': servers.serverList![index].serverUrl
-                      }),
+                      onTap: () => Get.toNamed(Routs.kWebPlayer,
+                          parameters: {
+                            'url': servers.serverList![index].serverUrl,
+                          },
+                          arguments: servers.serverList),
                       borderRadius: BorderRadius.circular(12),
                       child: Container(
                           alignment: Alignment.center,
@@ -47,6 +50,49 @@ class Helper {
                               color: PColors.darkBackground),
                           child: Text(
                             ' سيرفر ${servers.serverList![index].serverName}',
+                            style: CustomTheme.darkTextTheme.bodyMedium!,
+                          )),
+                    )),
+          ),
+        ),
+      ),
+    ));
+  }
+
+  static void showServersListWebPlayer(
+      servers, InAppWebViewController? controller) async {
+    Get.bottomSheet(BottomSheet(
+      onClosing: () {},
+      builder: (context) => Container(
+        height: Get.height / 2,
+        width: Get.width,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+            color: PColors.darkColor),
+        child: SingleChildScrollView(
+          child: Column(
+            children: List.generate(
+                servers.length,
+                (index) => InkWell(
+                      onTap: () async {
+                        Get.back();
+                        controller!.loadUrl(
+                            urlRequest: URLRequest(
+                                url: WebUri(servers[index].serverUrl)));
+                        await Future.delayed(const Duration(seconds: 3))
+                            .then((value) => controller.clearHistory());
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.all(8),
+                          height: 50,
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: PColors.darkBackground),
+                          child: Text(
+                            ' سيرفر ${servers[index].serverName}',
                             style: CustomTheme.darkTextTheme.bodyMedium!,
                           )),
                     )),
@@ -99,26 +145,28 @@ class Helper {
         enableDrag: true);
   }
 
-  static Future<void> checkForUpdate(response) async {
-    try {
-     
-      final json = jsonDecode(response.body);
-      final github = Github.fromJson(json);
-      if (version.compareTo(github.version.toString().trim()) == 0) {
-        isSameVersion = true;
-        // ignore: avoid_print
-        print('same version');
-      } else {
-        isSameVersion = false;
-        updateLink = github.downloadLink.toString();
-        await Get.dialog(UpdateAlertDialog(
-          downloadLink: github.downloadLink.toString(),
-        ));
-      }
-    } catch (e) {
+  static checkForUpdate(response) async {
+    final json = jsonDecode(response.body);
+    var adUrlFilters;
+    final github = Github.fromJson(json);
+    if (version.compareTo(github.version.toString().trim()) == 0) {
+      isSameVersion = true;
       // ignore: avoid_print
-      print(e.toString());
+      print('same version');
+    } else {
+      adUrlFilters = github.adUrlFilters;
+      isSameVersion = false;
+      updateLink = github.downloadLink.toString();
+      await Get.dialog(UpdateAlertDialog(
+        downloadLink: github.downloadLink.toString(),
+        body: github.newFeatures.toString(),
+      ));
     }
+    return adUrlFilters;
+    // } catch (e) {
+    //   // ignore: avoid_print
+    //   print(e.toString());
+    // }
   }
 
   static const key = 'customCacheKey';

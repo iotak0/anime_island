@@ -1,9 +1,6 @@
 class PIcons {
   static const search =
-      '''<svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M17.1438 32.9871C8.39332 32.9871 1.30042 25.8942 1.30042 17.1437C1.30042 8.3932 8.39332 1.30029 17.1438 1.30029C25.8943 1.30029 32.9872 8.3932 32.9872 17.1437C32.9872 25.8942 25.8943 32.9871 17.1438 32.9871Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M36.9577 36.9576L29.036 29.0359" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+      '''<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20 20L15.8033 15.8033C15.8033 15.8033 14 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5C18 11.0137 17.9484 11.5153 17.85 12" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
 ''';
   static const home =
       '''<svg width="47" height="47" viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,11 +42,23 @@ class PIcons {
 <path fill-rule="evenodd" clip-rule="evenodd" d="M26.8915 14.3168C27.4528 14.8782 27.4528 15.7883 26.8915 16.3497L20.2413 22.9999L26.8915 29.6501C27.4528 30.2115 27.4528 31.1217 26.8915 31.6831C26.3301 32.2444 25.4199 32.2444 24.8585 31.6831L17.1919 24.0164C16.6305 23.455 16.6305 22.5448 17.1919 21.9835L24.8585 14.3168C25.4199 13.7554 26.3301 13.7554 26.8915 14.3168Z" fill="white"/>
 </svg>
 ''';
+  static const left2 =
+      '''<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 9L15 4M15 20L7 12" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+''';
 //forward
   static const right =
       '''<svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M19.1085 14.3168C18.5472 14.8782 18.5472 15.7883 19.1085 16.3497L25.7587 22.9999L19.1085 29.6501C18.5472 30.2115 18.5472 31.1217 19.1085 31.6831C19.6699 32.2444 20.5801 32.2444 21.1415 31.6831L28.8081 24.0164C29.3695 23.455 29.3695 22.5448 28.8081 21.9835L21.1415 14.3168C20.5801 13.7554 19.6699 13.7554 19.1085 14.3168Z" fill="white"/>
 </svg>
+''';
+  static const right2 =
+      '''<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 9L9 4M9 20L17 12" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+''';
+  static const fullscreen =
+      '''<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.00002 3.99998H4.00004L4 9M20 8.99999V4L15 3.99997M15 20H20L20 15M4 15L4 20L9.00002 20" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+''';
+  static const bookmark2 =
+      '''<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M18 13V21L12 15L6 21V17M18 8V6C18 4.89543 17.1046 4 16 4H8C6.89543 4 6 4.89543 6 6V13" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
 ''';
   static const notifications =
       '''<svg width="47" height="47" viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -92,6 +101,9 @@ class PIcons {
       '''<svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M37.9912 19.7413C38.6705 19.1095 38.2772 17.9512 37.3476 17.8459L28.7307 16.6174C28.3731 16.5472 28.0514 16.3366 27.8726 15.9856L24.011 8.29856C23.582 7.45615 22.3664 7.45615 21.9731 8.29856L18.1115 15.9856C17.9327 16.3015 17.611 16.5472 17.2534 16.6174L8.63649 17.8459C7.70686 17.9863 7.34934 19.1095 7.99293 19.7413L14.25 25.7084C14.5361 25.9892 14.6433 26.3402 14.5718 26.6912L13.1058 35.1153C12.9271 36.0279 13.9282 36.73 14.7505 36.2736L22.4736 32.3073C22.7954 32.1318 23.2245 32.1318 23.5463 32.3073L31.2693 36.2736C32.0916 36.6948 33.0928 35.9928 32.9141 35.1153L31.4481 26.6912C31.3766 26.3402 31.5196 25.9541 31.7699 25.7084L37.9912 19.7413Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
+''';
+  static const menu =
+      '''<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 17H8M12 17H20M4 12H20M4 7H12M16 7H20" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
 ''';
   static const avatar =
       '''<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">

@@ -8,20 +8,20 @@ class UpdateAlertDialog extends StatelessWidget {
   const UpdateAlertDialog({
     Key? key,
     required this.downloadLink,
+    required this.body,
   }) : super(key: key);
-  final String downloadLink;
-
+  final String? downloadLink, body;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       elevation: 10,
-      backgroundColor: tkGradientBlue,
+      backgroundColor: tkDarkerBlue,
       contentPadding: EdgeInsets.only(top: 0.0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       content: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: tkDarkBlue,
+          color: tkDarkerBlue,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -60,7 +60,10 @@ class UpdateAlertDialog extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Text('تتوفر نسخة جديدة'),
+              child: Text(
+                1 == 2 ? body! : 'تتوفر نسخة جديدة',
+                style: CustomTheme.darkTextTheme.bodyMedium,
+              ),
             ),
             SizedBox(
               height: 20.0,
@@ -74,14 +77,12 @@ class UpdateAlertDialog extends StatelessWidget {
                   child: MaterialButton(
                 shape: RoundedRectangleBorder(
                     borderRadius:
-                        BorderRadius.only(bottomLeft: Radius.circular(20))),
+                        BorderRadius.only(bottomRight: Radius.circular(20))),
                 height: 50,
                 minWidth: double.infinity,
-                onPressed: () {
-                  Get.back();
-                },
+                onPressed: () => _launchUrl(downloadLink),
                 child: Text(
-                  'رجوع',
+                  'تحديث',
                   style: CustomTheme.darkTextTheme.titleMedium,
                 ),
               )),
@@ -94,52 +95,22 @@ class UpdateAlertDialog extends StatelessWidget {
                   child: MaterialButton(
                 shape: RoundedRectangleBorder(
                     borderRadius:
-                        BorderRadius.only(bottomRight: Radius.circular(20))),
+                        BorderRadius.only(bottomLeft: Radius.circular(20))),
                 height: 50,
                 minWidth: double.infinity,
-                onPressed: () => _launchUrl(downloadLink),
+                onPressed: () {
+                  Get.back();
+                },
                 child: Text(
-                  'تحديث',
-                  style: CustomTheme.darkTextTheme.titleMedium,
+                  'رجوع',
+                  style: CustomTheme.darkTextTheme.titleMedium!
+                      .copyWith(color: Colors.grey),
                 ),
               )),
             ])
           ],
         ),
       ),
-      // child: Column(
-      //   mainAxisSize: MainAxisSize.min,
-      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //   crossAxisAlignment: CrossAxisAlignment.start,
-      //   children: [
-      //     Container(
-      //       margin: EdgeInsets.symmetric(vertical: 10.h),
-      //       child:
-      //           Text('Tako-Play', style: TakoTheme.darkTextTheme.headline3),
-      //     ),
-      //     Container(
-      //       margin:
-      //           const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      //       child: Text('New Update is available',
-      //           style: TakoTheme.darkTextTheme.bodyText1),
-      //     ),
-      //     Row(
-      //       mainAxisAlignment: MainAxisAlignment.end,
-      //       children: [
-      //         MaterialButton(
-      //           elevation: 5,
-      //           color: tkGradientBlue.withAlpha(200),
-      //           child: Text(
-      //             'Update',
-      //             style: TakoTheme.darkTextTheme.subtitle2!
-      //                 .copyWith(fontWeight: FontWeight.w600),
-      //           ),
-      //           onPressed: () => launch(downloadLink),
-      //         ),
-      //       ],
-      //     ),
-      //   ],
-      // ),
     );
   }
 }
