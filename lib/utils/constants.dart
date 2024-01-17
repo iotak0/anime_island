@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 /// Collection of all app related constants go here
 
 const String version = '1.0.3';
+const String versionNumber = '2';
 String updateLink = '';
 bool isSameVersion = true;
 const license = 'MIT License';

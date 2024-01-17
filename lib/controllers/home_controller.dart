@@ -41,6 +41,7 @@ class HomeController extends GetxController {
       error.value = true;
       loading.value = false;
       printError(info: e.toString());
+      // ignore: invalid_return_type_for_catch_error
       return '';
     });
     printInfo(info: response.body);

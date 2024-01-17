@@ -10,8 +10,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:native_flutter_proxy/custom_proxy.dart';
-import 'package:native_flutter_proxy/native_proxy_reader.dart';
+// import 'package:native_flutter_proxy/custom_proxy.dart';
+// import 'package:native_flutter_proxy/native_proxy_reader.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

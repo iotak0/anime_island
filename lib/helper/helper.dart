@@ -149,7 +149,7 @@ class Helper {
     final json = jsonDecode(response.body);
     var adUrlFilters;
     final github = Github.fromJson(json);
-    if (version.compareTo(github.version.toString().trim()) == 0) {
+    if (version.compareTo(github.version.toString().trim()) == 0&&versionNumber.compareTo(github.versionNumber.toString().trim()) == 0) {
       isSameVersion = true;
       // ignore: avoid_print
       print('same version');
