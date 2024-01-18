@@ -10,7 +10,9 @@ class AdHelper {
           ? 'ca-app-pub-3940256099942544/6300978111'
           : 'ca-app-pub-8361517083614667/1458168275';
     } else if (Platform.isIOS) {
-      return 'ca-app-pub-3940256099942544/2934735716';
+      return testMode
+          ? 'ca-app-pub-3940256099942544/2934735716'
+          : 'ca-app-pub-8361517083614667/2910070497';
     } else {
       throw new UnsupportedError('Unsupported platform');
     }
@@ -22,7 +24,9 @@ class AdHelper {
           ? "ca-app-pub-3940256099942544/1033173712"
           : "ca-app-pub-8361517083614667/2068504371";
     } else if (Platform.isIOS) {
-      return "ca-app-pub-3940256099942544/4411468910";
+      return testMode
+          ? "ca-app-pub-3940256099942544/4411468910"
+          : "ca-app-pub-8361517083614667/6787956937";
     } else {
       throw new UnsupportedError("Unsupported platform");
     }
@@ -34,7 +38,9 @@ class AdHelper {
           ? "ca-app-pub-3940256099942544/5224354917"
           : "ca-app-pub-8361517083614667/3190014357";
     } else if (Platform.isIOS) {
-      return "ca-app-pub-3940256099942544/1712485313";
+      return testMode
+          ? "ca-app-pub-3940256099942544/1712485313"
+          : ":ca-app-pub-8361517083614667/4900160196";
     } else {
       throw new UnsupportedError("Unsupported platform");
     }
